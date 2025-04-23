@@ -26,12 +26,12 @@ public class DashboardForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnAddBook = new javax.swing.JButton();
+        btnViewBooks = new javax.swing.JButton();
+        btnIssueBook = new javax.swing.JButton();
+        btnReturnBook = new javax.swing.JButton();
+        btnVwIssuedBks = new javax.swing.JButton();
+        btnMngMbs = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
@@ -44,36 +44,61 @@ public class DashboardForm extends javax.swing.JFrame {
         jLabel1.setText("Dashboard");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 40, 230, 60));
 
-        jButton1.setText("Add Book");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAddBook.setText("Add Book");
+        btnAddBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAddBookActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 103, 34));
+        getContentPane().add(btnAddBook, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 103, 34));
 
-        jButton2.setText("View Available Books");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnViewBooks.setText("View Available Books");
+        btnViewBooks.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnViewBooksActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 152, 34));
+        getContentPane().add(btnViewBooks, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, 152, 34));
 
-        jButton3.setText("Issue Book");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, 103, 34));
+        btnIssueBook.setText("Issue Book");
+        btnIssueBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIssueBookActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnIssueBook, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, 103, 34));
 
-        jButton4.setText("Return Book");
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 103, 34));
+        btnReturnBook.setText("Return Book");
+        btnReturnBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnBookActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnReturnBook, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 230, 103, 34));
 
-        jButton5.setText("View Issued Books");
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 230, 152, 34));
+        btnVwIssuedBks.setText("View Issued Books");
+        btnVwIssuedBks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVwIssuedBksActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnVwIssuedBks, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 230, 152, 34));
 
-        jButton6.setText("Add Member");
-        jButton6.setToolTipText("");
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 230, 103, 34));
+        btnMngMbs.setText("Members");
+        btnMngMbs.setToolTipText("");
+        btnMngMbs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMngMbsActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnMngMbs, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 230, 103, 34));
 
         jButton7.setText("Logout");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 330, 283, 35));
 
         jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Makgopa\\Desktop\\Projects\\HexSoftwares - Internship - Java Programs\\Library Management System\\src\\Images\\Library Image From You (Sized).jpg")); // NOI18N
@@ -83,17 +108,42 @@ public class DashboardForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAddBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBookActionPerformed
         // Open the AddBook form
         new AddBook().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnAddBookActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnViewBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewBooksActionPerformed
         // Open the View Available Books form
         new ViewBooks().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnViewBooksActionPerformed
+
+    private void btnIssueBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIssueBookActionPerformed
+        new IssueBook().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnIssueBookActionPerformed
+
+    private void btnReturnBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnBookActionPerformed
+        new ReturnBook().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnReturnBookActionPerformed
+
+    private void btnVwIssuedBksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVwIssuedBksActionPerformed
+        new ViewIssuedBooks().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVwIssuedBksActionPerformed
+
+    private void btnMngMbsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngMbsActionPerformed
+        new ManageMembers().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnMngMbsActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+       new LoginForm().setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -131,12 +181,12 @@ public class DashboardForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton btnAddBook;
+    private javax.swing.JButton btnIssueBook;
+    private javax.swing.JButton btnMngMbs;
+    private javax.swing.JButton btnReturnBook;
+    private javax.swing.JButton btnViewBooks;
+    private javax.swing.JButton btnVwIssuedBks;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
