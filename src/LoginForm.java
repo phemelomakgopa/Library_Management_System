@@ -162,10 +162,12 @@ public class LoginForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        String userPassword = new String(txtPassword.getPassword());
-        String username = txtUsername.getText();
-        
+       
+                
         try {
+            String userPassword = new String(txtPassword.getPassword());
+            String username = txtUsername.getText();
+            
             Connection conn = DBConnection.getConnection();
             String query = "SELECT * FROM LIBRARIANS WHERE username = ? AND password = ?";
             PreparedStatement pst = conn.prepareStatement(query);
@@ -173,6 +175,8 @@ public class LoginForm extends javax.swing.JFrame {
             pst .setString(2, userPassword);
 
             ResultSet rs = pst.executeQuery();
+            
+
             
             if(rs.next())
             {
@@ -186,6 +190,7 @@ public class LoginForm extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid username or password");
 
             }
+            
             
             conn.close();
         }
