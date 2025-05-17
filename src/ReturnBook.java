@@ -69,6 +69,7 @@ public class ReturnBook extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 51, 51));
         jLabel6.setText("Return Book");
         jLabel6.setToolTipText("");
 

@@ -51,6 +51,7 @@ public class AddBook extends javax.swing.JFrame {
         jLabel4.setText("Nr. of Copies:");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 51, 51));
         jLabel5.setText("Add New Book");
 
         btnCancel.setText("Cancel");

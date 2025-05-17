@@ -148,8 +148,9 @@ public class IssueBook extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(357, 208, 140, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 0, 0));
         jLabel6.setText("Issue Book");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(351, 17, 122, 42));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, 122, 42));
 
         btnIssue1.setText("Issue");
         getContentPane().add(btnIssue1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 338, 134, 45));
