@@ -169,7 +169,7 @@ public class LoginForm extends javax.swing.JFrame {
             String username = txtUsername.getText();
             
             //Connection conn = DBConnection.getConnection();
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/TTLibrary",
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library",
                 "root",
                 "msB53:GoT&LCDP" );
             String query = "SELECT * FROM LIBRARIANS WHERE username = ? AND password = ?";
@@ -179,7 +179,7 @@ public class LoginForm extends javax.swing.JFrame {
 
             ResultSet rs = pst.executeQuery();
             
-
+           
             
             if(rs.next())
             {

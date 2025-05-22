@@ -137,7 +137,7 @@ public class ViewBooks extends javax.swing.JFrame {
         try
         {
             //Connection conn = DBConnection.getConnection();
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/TTLibrary",
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/library",
                 "root",
                 "msB53:GoT&LCDP" );
             String query = "SELECT * FROM BOOKS";
@@ -161,7 +161,7 @@ public class ViewBooks extends javax.swing.JFrame {
         }
         catch(SQLException er)
         {
-            JOptionPane.showMessageDialog(null, "Error loading books:\n" + er.getMessage());
+            JOptionPane.showMessageDialog(this, "Error loading books:\n" + er.getMessage());
         }
     }
     private void btnIssueBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIssueBookActionPerformed

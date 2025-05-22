@@ -1,3 +1,7 @@
+import java.sql.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -28,28 +32,38 @@ public class ManageMembers extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnAdd = new javax.swing.JButton();
-        txtTitle = new javax.swing.JTextField();
+        txtName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtAuthor = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblMembers = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         btnRefresh = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbxMemberID = new javax.swing.JComboBox<>();
         btnRemove = new javax.swing.JButton();
         btnDashboard = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Name:");
 
         btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Email:");
 
@@ -74,8 +88,8 @@ public class ManageMembers extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtAuthor, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
-                                .addComponent(txtTitle)))))
+                                .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                                .addComponent(txtName)))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -86,11 +100,11 @@ public class ManageMembers extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtAuthor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
@@ -100,7 +114,7 @@ public class ManageMembers extends javax.swing.JFrame {
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblMembers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -119,9 +133,9 @@ public class ManageMembers extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblMembers);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 52, 346, 235));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(26, 52, 440, 235));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("View Members");
@@ -133,16 +147,16 @@ public class ManageMembers extends javax.swing.JFrame {
                 btnRefreshActionPerformed(evt);
             }
         });
-        jPanel2.add(btnRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(142, 299, 123, 37));
+        jPanel2.add(btnRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 123, 37));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(365, 28, -1, 342));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, -1, 342));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel7.setText("Remove Members");
 
         jLabel3.setText("Member ID:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbxMemberID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnRemove.setText("Remove");
         btnRemove.addActionListener(new java.awt.event.ActionListener() {
@@ -156,18 +170,14 @@ public class ManageMembers extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(20, 20, 20)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbxMemberID, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(82, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -178,13 +188,13 @@ public class ManageMembers extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbxMemberID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, -1, -1));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, -1, 120));
 
         btnDashboard.setText("Dashboard");
         btnDashboard.addActionListener(new java.awt.event.ActionListener() {
@@ -192,23 +202,157 @@ public class ManageMembers extends javax.swing.JFrame {
                 btnDashboardActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 380, 320, 37));
+        getContentPane().add(btnDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 390, 320, 37));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void loadMembers()
+    {
+        // load members
+        DefaultTableModel model = (DefaultTableModel) tblMembers.getModel();
+        model.setRowCount(0);
+        try
+        {
+            Connection conn = DBConnection.getConnection();
+            String selectQuery = "SELECT * FROM members";
+            PreparedStatement pst = conn.prepareStatement(selectQuery);
+            ResultSet rst = pst.executeQuery();
+            
+            while(rst.next())
+            {
+                int id = rst.getInt("MemberID");
+                String name = rst.getString("Name");
+                String email = rst.getString("Email");
+                
+                model.addRow(new Object[] {id, name, email});
+            }
+            
+            rst.close();
+            pst.close();
+            conn.close();
+        }
+        catch(SQLException er)
+        {
+            JOptionPane.showMessageDialog(this, "Error loading members:\n" + er.getMessage());
+        }
+    }
+    
+    public void populateMemberIDs()
+    {
+        try
+        {
+            // populate member ids
+            Connection conn = DBConnection.getConnection();
+            String query = "SELECT MemberID FROM members";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rst = pst.executeQuery();
+
+            cmbxMemberID.removeAllItems(); // clear previous items
+            while(rst.next())
+            {
+                cmbxMemberID.addItem(rst.getString("MemberID"));
+            }
+
+            rst.close();
+            pst.close();
+            conn.close();
+        }
+        catch(SQLException er)
+        {
+            JOptionPane.showMessageDialog(this, "Error loading Member IDs: " + er.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            er.printStackTrace();
+        } 
+    }
+    
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        // TODO add your handling code here:
+        try
+        {
+            // Delete a member
+            String selectedID = (String)cmbxMemberID.getSelectedItem();
+            
+            if(selectedID == null)
+            {
+                JOptionPane.showMessageDialog(this, "Please select a Member ID to delete!");
+                return;
+            }
+            
+            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete Member ID: " + selectedID + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+            if (confirm != JOptionPane.YES_OPTION) return;
+            
+            Connection conn = DBConnection.getConnection(); 
+            String query = "DELETE FROM MEMBERS WHERE memberID = ?";
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, selectedID);
+            int rowsAffected = pst.executeUpdate();
+            
+            loadMembers();
+
+            if(rowsAffected > 0)
+            {
+                JOptionPane.showMessageDialog(this, "Member " + selectedID + " deleted succesfully");
+                populateMemberIDs();
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "No member found with that ID");
+            }
+            
+            pst.close();
+            conn.close();
+            
+        }
+        catch(SQLException er)
+        {
+            JOptionPane.showMessageDialog(this, "Error deleting member: " + er.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            er.printStackTrace();
+        } 
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        // TODO add your handling code here:
+        loadMembers();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
        new DashboardForm().setVisible(true);
        this.dispose();
     }//GEN-LAST:event_btnDashboardActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        try
+        {
+            // Add a member
+            String name = txtName.getText();
+            String email = txtEmail.getText();
+            
+            Connection conn = DBConnection.getConnection();
+            String insertQuery = "INSERT INTO MEMBERS(Name, Email) VALUES (?, ?)";
+            PreparedStatement stm = conn.prepareCall(insertQuery);
+            stm.setString(1, name);
+            stm.setString(2, email);
+            
+            stm.execute();
+            
+            loadMembers();
+            populateMemberIDs();
+
+            JOptionPane.showMessageDialog(this, name + " has been added as a member!");
+            
+            txtName.setText(null);
+            txtEmail.setText(null);
+        }
+        catch(SQLException er)
+        {
+            JOptionPane.showMessageDialog(this, "Database error: " + er.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            er.printStackTrace();
+        }     
+           
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        populateMemberIDs();
+        loadMembers(); 
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -250,7 +394,7 @@ public class ManageMembers extends javax.swing.JFrame {
     private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnRemove;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cmbxMemberID;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -261,8 +405,8 @@ public class ManageMembers extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField txtAuthor;
-    private javax.swing.JTextField txtTitle;
+    private javax.swing.JTable tblMembers;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }
