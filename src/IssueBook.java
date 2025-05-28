@@ -1,3 +1,5 @@
+import java.sql.*;
+import javax.swing.*;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -53,9 +55,19 @@ public class IssueBook extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         cmbBook.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbBookActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Select a Book to Issue");
@@ -101,11 +113,16 @@ public class IssueBook extends javax.swing.JFrame {
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 230, 519, 90));
 
         cmbMember.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMemberActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Select a Member to Issue a Book to:");
 
-        jLabel4.setText("Book ID & Title:");
+        jLabel4.setText("Member:");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -153,16 +170,136 @@ public class IssueBook extends javax.swing.JFrame {
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, 122, 42));
 
         btnIssue1.setText("Issue");
+        btnIssue1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIssue1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnIssue1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 338, 134, 45));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+       public void populateComboBoxes()
+        {
+            try(Connection conn = DBConnection.getConnection())
+            {
+                Statement stmt = conn.createStatement();
+                
+                // Clear both combo boxes first
+                cmbBook.removeAllItems();
+                cmbMember.removeAllItems();
+                
+                // Populate Books
+                ResultSet rsBooks = stmt.executeQuery("SELECT BookID, Title FROM BOOKS WHERE Copies > 0");
+                while(rsBooks.next())
+                {
+                    String item = rsBooks.getInt("BookID") + " - " + rsBooks.getString("Title");
+                    cmbBook.addItem(item);
+                }
+                
+                // Populate Members
+                ResultSet rsMembers = stmt.executeQuery("SELECT MemberID, Name FROM MEMBERS");
+                while(rsMembers.next())
+                {
+                    String item = rsMembers.getInt("MemberID") + " - " + rsMembers.getString("Name");
+                    cmbMember.addItem(item);
+                }
+                
+            }
+            catch(SQLException err)
+            {
+                JOptionPane.showMessageDialog(this, "Error loading data: " + err.getMessage());
+            }
+        }
+    private void updateSummary()
+    {
+        String book = (String) cmbBook.getSelectedItem();
+        String member = (String) cmbMember.getSelectedItem();
+        
+        if (book != null && member != null)
+        {
+            DefaultListModel<String> model = new DefaultListModel<>();
+            model.addElement("Book: " + book);
+            model.addElement("Issued to: " + member);
+            lstbxIssueDetails.setModel(model);
+        }
+    }
+    
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
         new DashboardForm().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnDashboardActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+     
+    }//GEN-LAST:event_formWindowOpened
+
+    private void cmbBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBookActionPerformed
+        updateSummary();
+    }//GEN-LAST:event_cmbBookActionPerformed
+
+    private void cmbMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMemberActionPerformed
+      updateSummary();
+    }//GEN-LAST:event_cmbMemberActionPerformed
+
+    private void btnIssue1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIssue1ActionPerformed
+        String bookEntry = (String) cmbBook.getSelectedItem();
+        String memberEntry = (String) cmbMember.getSelectedItem();
+        
+        if(bookEntry == null || memberEntry == null)
+        {
+            JOptionPane.showMessageDialog(this, "Please select both a book and a member");
+            return;
+        }
+        
+       
+        int bookID = Integer.parseInt(bookEntry.split(" - ")[0]);
+        int memberID = Integer.parseInt(memberEntry.split(" - ")[0]);
+
+        try(Connection conn = DBConnection.getConnection())
+        {
+            // Check book availability
+            PreparedStatement checkBook = conn.prepareStatement("SELECT Copies FROM BOOKS WHERE BookID = ?");
+            checkBook.setInt(1, bookID);
+            ResultSet rs = checkBook.executeQuery();
+
+            if(rs.next())
+            {
+                int copies = rs.getInt("Copies");
+                if(copies <= 0)
+                {
+                    JOptionPane.showMessageDialog(this, "No copies available.");
+                    return;
+                }
+
+                // Insert into ISSUED_BOOKS table
+                PreparedStatement insertIssue = conn.prepareStatement("INSERT INTO ISSUED_BOOKS (BookID, MemberID, IssueDate) VALUES (?, ?, NOW())");
+
+                insertIssue.setInt(1, bookID);
+                insertIssue.setInt(2, memberID);
+                insertIssue.executeUpdate();
+
+                // Update book copies
+                PreparedStatement updateBook = conn.prepareStatement("UPDATE BOOKS SET Copies = Copies - 1 WHERE BookID = ?");
+                updateBook.setInt(1, bookID);
+                updateBook.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Book issued succesfully");
+                populateComboBoxes();
+                lstbxIssueDetails.setModel(new DefaultListModel<>());
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Book not found");
+            }
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(this, "Error issuing book: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnIssue1ActionPerformed
+    
     /**
      * @param args the command line arguments
      */
