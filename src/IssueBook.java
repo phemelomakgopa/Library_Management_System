@@ -233,6 +233,7 @@ public class IssueBook extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
      
+        populateComboBoxes();
     }//GEN-LAST:event_formWindowOpened
 
     private void cmbBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBookActionPerformed

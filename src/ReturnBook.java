@@ -1,3 +1,7 @@
+import javax.swing.*;
+import java.sql.*;
+import java.util.*;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -27,8 +31,6 @@ public class ReturnBook extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         btnReturn = new javax.swing.JButton();
-        txtMemberID = new javax.swing.JTextField();
-        txtBookID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -37,20 +39,38 @@ public class ReturnBook extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         btnDashboard = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        cmbBookTitle = new javax.swing.JComboBox<>();
+        cmbMemberName = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Member ID:");
+        jLabel1.setText("Member Name:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 90, -1));
 
         btnReturn.setText("Return");
+        btnReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnReturn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 342, 95, 33));
 
-        jLabel2.setText("Book ID:");
+        jLabel2.setText("Book Title:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 140, 60, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setText("Member");
+        jLabel3.setText("Select Member");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 110, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel4.setText("Book");
+        jLabel4.setText("Select Book");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 90, -1));
 
         lstbxReturnDetails.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -59,7 +79,10 @@ public class ReturnBook extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(lstbxReturnDetails);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 219, 490, 110));
+
         jLabel5.setText("Confirm Details Below");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(209, 197, 140, -1));
 
         btnDashboard.setText("Dashboard");
         btnDashboard.addActionListener(new java.awt.event.ActionListener() {
@@ -67,82 +90,29 @@ public class ReturnBook extends javax.swing.JFrame {
                 btnDashboardActionPerformed(evt);
             }
         });
+        getContentPane().add(btnDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 340, 95, 33));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 51, 51));
         jLabel6.setText("Return Book");
         jLabel6.setToolTipText("");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, 165, 42));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(200, 200, 200)
-                        .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(167, 167, 167)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGap(36, 36, 36)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtMemberID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(90, 90, 90)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGap(42, 42, 42)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(83, 83, 83))))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(163, 163, 163)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(63, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtMemberID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtBookID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addComponent(jLabel5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(100, 100, 100))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34))))
-        );
+        cmbBookTitle.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbBookTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbBookTitleActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cmbBookTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 140, 140, -1));
+
+        cmbMemberName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMemberName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMemberNameActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cmbMemberName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 140, 150, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -151,6 +121,107 @@ public class ReturnBook extends javax.swing.JFrame {
         new DashboardForm().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnDashboardActionPerformed
+
+    private void populateComboboxes()
+    {
+        try
+        {
+            Connection conn = DBConnection.getConnection();
+            String query = "SELECT DISTINCT memberId, bookId FROM issued_books";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rst = pst.executeQuery();
+            
+            // Using sets to avoid duplicates
+            Set<String> memberIds = new HashSet<>();
+            Set<String> bookIds = new HashSet<>();
+
+            
+            // clear previous items
+            cmbMemberName.removeAllItems(); 
+            cmbBookTitle.removeAllItems(); 
+            
+            while(rst.next())
+            {
+                // Populate the comboboxes
+                memberIds.add(rst.getString("memberID"));
+                bookIds.add(rst.getString("bookID"));
+            }
+            
+            rst.close();
+            pst.close();
+            
+            // Get member names 
+            for (String memberId : memberIds)
+            {
+                String memberQuery = "SELECT name FROM members WHERE MemberID = ?";
+                PreparedStatement memberPst = conn.prepareStatement(memberQuery);
+                memberPst.setString(1, memberId);
+                ResultSet memberRs = memberPst.executeQuery();
+                
+                if(memberRs.next())
+                {
+                    String memberName = memberRs.getString("name");
+                    cmbMemberName.addItem(memberName);
+                }
+                
+                memberRs.close();
+                memberPst.close();         
+            }
+            
+            // Get book titles
+            for (String bookId : bookIds)
+            {
+                String bookQuery = "SELECT title FROM books WHERE bookID = ?";
+                PreparedStatement bookPst = conn.prepareStatement(bookQuery);
+                bookPst.setString(1, bookId);
+                ResultSet bookRs = bookPst.executeQuery();
+                
+                if(bookRs.next())
+                {
+                    String bookTitle = bookRs.getString("title");
+                    cmbBookTitle.addItem(bookTitle);
+                }
+                    
+                bookRs.close();
+                bookPst.close();
+            }
+            conn.close();
+        }
+        catch(SQLException er)
+        {
+            JOptionPane.showMessageDialog(this, "Error loading Member IDs: " + er.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    private void updateReturnSummary()
+    {
+        String book = (String) cmbBookTitle.getSelectedItem();
+        String member = (String) cmbMemberName.getSelectedItem();
+        
+        if (book != null && member != null)
+        {
+            DefaultListModel<String> model = new DefaultListModel<>();
+            model.addElement("Book: " + book);
+            model.addElement("Returned by: " + member);
+            lstbxReturnDetails.setModel(model);
+        }
+    }
+    private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
+
+       
+    }//GEN-LAST:event_btnReturnActionPerformed
+
+    private void cmbBookTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBookTitleActionPerformed
+        updateReturnSummary();
+
+    }//GEN-LAST:event_cmbBookTitleActionPerformed
+
+    private void cmbMemberNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMemberNameActionPerformed
+       updateReturnSummary();
+    }//GEN-LAST:event_cmbMemberNameActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        populateComboboxes();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -190,6 +261,8 @@ public class ReturnBook extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnReturn;
+    private javax.swing.JComboBox<String> cmbBookTitle;
+    private javax.swing.JComboBox<String> cmbMemberName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -198,7 +271,5 @@ public class ReturnBook extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<String> lstbxReturnDetails;
-    private javax.swing.JTextField txtBookID;
-    private javax.swing.JTextField txtMemberID;
     // End of variables declaration//GEN-END:variables
 }
