@@ -1,3 +1,6 @@
+import javax.swing.*;
+import java.sql.*;
+import javax.swing.table.DefaultTableModel;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -16,6 +19,48 @@ public class ViewIssuedBooks extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void loadInfo()
+    {
+        //DefaultTableModel model = (DefaultTableModel) tblInfo.getModel();
+        //model.setRowCount(0);
+        
+        try
+        {
+            Connection conn = DBConnection.getConnection();
+            String query = "SELECT * FROM issued_books";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            // Table model setup
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Issue ID");
+            model.addColumn("Book ID");
+            model.addColumn("Member ID");
+            model.addColumn("Issue Date");
+            model.addColumn("Return Date");
+          
+            while (rs.next())
+            {
+                Object[] row = new Object[5];
+                row[0] = rs.getString("issueID");
+                row[1] = rs.getString("bookId");
+                row[2] = rs.getString("memberId");
+                row[3] = rs.getString("issueDate");
+                row[4] = rs.getString("returnDate");
+                model.addRow(row);
+
+            }
+            tblInfo.setModel(model);
+            
+            rs.close();
+            pst.close();
+            conn.close();
+        }
+        catch(SQLException er)
+        {
+            JOptionPane.showMessageDialog(this, "Error loading books:\n" + er.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,15 +71,20 @@ public class ViewIssuedBooks extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblInfo = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         btnDashboard = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         btnIssueBook = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -53,7 +103,7 @@ public class ViewIssuedBooks extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblInfo);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel5.setText("View Issued Books");
@@ -126,13 +176,17 @@ public class ViewIssuedBooks extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        // TODO add your handling code here:
+        loadInfo();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnIssueBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIssueBookActionPerformed
         new ReturnBook().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnIssueBookActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        loadInfo();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -175,6 +229,6 @@ public class ViewIssuedBooks extends javax.swing.JFrame {
     private javax.swing.JButton btnRefresh;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblInfo;
     // End of variables declaration//GEN-END:variables
 }
